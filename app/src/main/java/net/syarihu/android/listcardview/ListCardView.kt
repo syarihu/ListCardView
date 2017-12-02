@@ -52,6 +52,7 @@ class ListCardView : CardView {
             value?.let {
                 it.listLimit = listLimit
                 listItemCache.clear()
+                dividerCache.clear()
                 for (position in 0 until it.getCount()) {
                     listItemCache.put(it.getId(position), it.createView(position, this))
                     dividerCache.put(position.toLong(), createDividerView())
