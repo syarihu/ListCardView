@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="limit"
+            type="int"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        tools:context="net.syarihu.android.listcardview.MainActivity">
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="追加"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/remove"/>
+
+        <Button
+            android:id="@+id/remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="削除"
+            app:layout_constraintLeft_toRightOf="@+id/add"
+            app:layout_constraintRight_toLeftOf="@+id/change"/>
+
+        <Button
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="変更"
+            app:layout_constraintLeft_toRightOf="@+id/remove"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <TextView
+            android:id="@+id/limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{"Limit: " + limit}'
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/limit_plus"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/limit_plus"
+            app:layout_constraintTop_toTopOf="@+id/limit_plus"
+            tools:text="Limit: 3"/>
+
+        <Button
+            android:id="@+id/limit_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            app:layout_constraintLeft_toRightOf="@+id/limit"
+            app:layout_constraintRight_toLeftOf="@+id/limit_minus"
+            app:layout_constraintTop_toBottomOf="@+id/add"/>
+
+        <Button
+            android:id="@+id/limit_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="@+id/limit_plus"
+            app:layout_constraintLeft_toRightOf="@+id/limit_plus"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/limit_plus"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limit_plus"
+            app:layout_constraintVertical_bias="0"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ListCardView">
+        <attr name="headerText" format="string"/>
+        <attr name="headerTextColor" format="color"/>
+        <attr name="footerText" format="string"/>
+        <attr name="footerTextColor" format="color"/>
+        <attr name="android:divider"/>
+        <attr name="listLimit" format="integer"/>
+    </declare-styleable>
+</resources>
