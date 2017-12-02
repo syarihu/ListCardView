@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding.change.setOnClickListener {
             if (list.size > 0) {
                 list[0] = "test${Random().nextInt()}"
+                simpleAdapter?.notifyDataSetChanged()
             }
         }
         binding.limitPlus.setOnClickListener {
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return 1
+            return 3
         }
     }
 }
