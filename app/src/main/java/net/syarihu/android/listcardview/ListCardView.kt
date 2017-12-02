@@ -3,9 +3,9 @@ package net.syarihu.android.listcardview
 import android.content.Context
 import android.database.Observable
 import android.graphics.Color
+import android.support.v4.util.LongSparseArray
 import android.support.v7.widget.CardView
 import android.util.AttributeSet
-import android.util.LongSparseArray
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
