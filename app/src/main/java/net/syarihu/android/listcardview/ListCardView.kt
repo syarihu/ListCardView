@@ -70,7 +70,6 @@ class ListCardView : CardView {
 
     fun onAdapterChanged(adapter: Adapter) {
         listLimit = adapter.listLimit
-        val l = listView
         val diff = adapter.getCount() - listItemCache.size()
         if (diff < 0) {
             for (i in listItemCache.size() - 1 downTo (listItemCache.size() - Math.abs(diff))) {
@@ -85,12 +84,12 @@ class ListCardView : CardView {
             }
             dividerCache.put(listItemCache.size().toLong(), createDividerView())
         }
-        l.removeAllViews()
+        listView.removeAllViews()
         for (i in 0 until listItemCache.limit()) {
-            l.addView(dividerCache.valueAt(i))
-            l.addView(adapter.bindView(i, listItemCache.get(adapter.getId(i))))
+            listView.addView(dividerCache.valueAt(i))
+            listView.addView(adapter.bindView(i, listItemCache.get(adapter.getId(i))))
         }
-        l.addView(dividerCache.valueAt(listItemCache.size()))
+        listView.addView(dividerCache.valueAt(listItemCache.size()))
     }
 
     constructor(context: Context?) : super(context) {
