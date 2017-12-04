@@ -27,7 +27,7 @@ class SimpleAdapter(
         return list[position]
     }
 
-    override fun getId(position: Int): Long {
+    override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
