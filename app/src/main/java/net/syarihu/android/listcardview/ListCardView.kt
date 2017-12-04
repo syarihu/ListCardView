@@ -3,13 +3,17 @@ package net.syarihu.android.listcardview
 import android.content.Context
 import android.database.Observable
 import android.graphics.Color
+import android.support.annotation.LayoutRes
+import android.support.annotation.StringRes
 import android.support.v4.util.LongSparseArray
 import android.support.v7.widget.CardView
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -22,14 +26,14 @@ class ListCardView : CardView {
 
     private var dividerColor = Color.LTGRAY
     private var listLimit = 0
+    var addItemAnimation: Int = -1
 
     private var rootView: RelativeLayout = RelativeLayout(context).apply {
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
     var headerView: View? = TextView(context).apply {
-        id = R.id.header_view
-        layoutParams = RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
+        setUpHeaderView()
     }
     private var listView: LinearLayout = LinearLayout(context).apply {
         id = R.id.list_view
@@ -39,12 +43,9 @@ class ListCardView : CardView {
         }
     }
     var footerView: View? = TextView(context).apply {
-        id = R.id.footer_view
         gravity = Gravity.END
         setPadding(defaultPadding, defaultPadding, defaultPadding, defaultPadding)
-        layoutParams = RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-            addRule(RelativeLayout.BELOW, R.id.list_view)
-        }
+        setUpFooterView()
     }
 
     var adapter: Adapter? = null
@@ -87,7 +88,11 @@ class ListCardView : CardView {
         listView.removeAllViews()
         for (i in 0 until listItemCache.limit()) {
             listView.addView(dividerCache.valueAt(i))
-            listView.addView(adapter.bindView(i, listItemCache.get(adapter.getItemId(i))))
+            listView.addView(adapter.bindView(i, listItemCache.get(adapter.getItemId(i))).apply {
+                if (addItemAnimation != -1 && listItemCache.size() >= listLimit && i == listItemCache.limit() - 1) {
+                    startAnimation(AnimationUtils.loadAnimation(context, addItemAnimation))
+                }
+            })
         }
         listView.addView(dividerCache.valueAt(listItemCache.size()))
     }
@@ -102,6 +107,48 @@ class ListCardView : CardView {
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         initialize(attrs)
+    }
+
+    fun setHeaderText(@StringRes resId: Int) {
+        if (headerView is TextView) {
+            (headerView as TextView).setText(resId)
+        }
+    }
+
+    fun setFooterText(@StringRes resId: Int) {
+        if (footerView is TextView) {
+            (footerView as TextView).setText(resId)
+        }
+    }
+
+    private fun View.setUpHeaderView(): View {
+        id = R.id.header_view
+        layoutParams = RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        return this
+    }
+
+    private fun View.setUpFooterView(): View {
+        id = R.id.footer_view
+        layoutParams = RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+            addRule(RelativeLayout.BELOW, R.id.list_view)
+        }
+        return this
+    }
+
+    fun setHeaderView(@LayoutRes resId: Int): View {
+        rootView.removeView(headerView)
+        headerView = LayoutInflater.from(context).inflate(resId, this, false).setUpHeaderView()
+        rootView.addView(headerView, 0)
+        invalidate()
+        return headerView as View
+    }
+
+    fun setFooterView(@LayoutRes resId: Int): View {
+        rootView.removeView(footerView)
+        footerView = LayoutInflater.from(context).inflate(resId, this, false).setUpFooterView()
+        rootView.addView(footerView)
+        invalidate()
+        return footerView as View
     }
 
     private fun initialize(attrs: AttributeSet? = null) {
@@ -121,6 +168,7 @@ class ListCardView : CardView {
                 }
                 dividerColor = getColor(R.styleable.ListCardView_android_divider, Color.LTGRAY)
                 listLimit = getInteger(R.styleable.ListCardView_listLimit, 0)
+                rootView.setBackgroundColor(getColor(R.styleable.ListCardView_cardBackgroundColor, Color.WHITE))
             }
         }
         rootView.addView(headerView)

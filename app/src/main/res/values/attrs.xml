@@ -7,5 +7,6 @@
         <attr name="footerTextColor" format="color"/>
         <attr name="android:divider"/>
         <attr name="listLimit" format="integer"/>
+        <attr name="cardBackgroundColor" format="color" />
     </declare-styleable>
 </resources>
