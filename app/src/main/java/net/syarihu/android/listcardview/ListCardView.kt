@@ -54,7 +54,7 @@ class ListCardView : CardView {
                 listItemCache.clear()
                 dividerCache.clear()
                 for (position in 0 until it.getCount()) {
-                    listItemCache.put(it.getId(position), it.createView(position, this))
+                    listItemCache.put(it.getItemId(position), it.createView(position, this))
                     dividerCache.put(position.toLong(), createDividerView())
                 }
                 dividerCache.put(listItemCache.size().toLong(), createDividerView())
@@ -79,7 +79,7 @@ class ListCardView : CardView {
         } else if (diff > 0) {
             val startPosition = if (listItemCache.size() == 0) 0 else listItemCache.size()
             for (i in startPosition until listItemCache.size() + Math.abs(diff)) {
-                listItemCache.put(adapter.getId(i), adapter.createView(i, this@ListCardView))
+                listItemCache.put(adapter.getItemId(i), adapter.createView(i, this@ListCardView))
                 dividerCache.put(i.toLong(), createDividerView())
             }
             dividerCache.put(listItemCache.size().toLong(), createDividerView())
@@ -87,7 +87,7 @@ class ListCardView : CardView {
         listView.removeAllViews()
         for (i in 0 until listItemCache.limit()) {
             listView.addView(dividerCache.valueAt(i))
-            listView.addView(adapter.bindView(i, listItemCache.get(adapter.getId(i))))
+            listView.addView(adapter.bindView(i, listItemCache.get(adapter.getItemId(i))))
         }
         listView.addView(dividerCache.valueAt(listItemCache.size()))
     }
@@ -158,7 +158,7 @@ class ListCardView : CardView {
         abstract fun createView(position: Int, viewGroup: ViewGroup?): View
         abstract fun bindView(position: Int, view: View): View
         abstract fun getItem(position: Int): Any
-        abstract fun getId(position: Int): Long
+        abstract fun getItemId(position: Int): Long
         abstract fun getCount(): Int
         fun notifyDataSetChanged() {
             observable.notifyChanged()
